@@ -1,0 +1,22 @@
+# One-click setup for Render.com (Blueprint). The disk keeps RSVPs and uploaded photos safe across deploys.
+services:
+  - type: web
+    name: sanjay-namitha-wedding
+    runtime: node
+    plan: starter
+    buildCommand: npm ci --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /var/data
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+    disk:
+      name: wedding-data
+      mountPath: /var/data
+      sizeGB: 1
